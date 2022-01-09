@@ -1,0 +1,52 @@
+use Test;
+use ValueMap;
+
+plan 2;
+
+my @initial = "a".."e" Z=> 1..5;
+
+my %a is ValueMap = @initial;
+
+my %b is ValueMap = @initial;
+is %b.WHICH, %a.WHICH, 'are %b and %a the same value type';
+
+my $c = ValueMap.new(@initial);
+is $c.WHICH, %a.WHICH, 'are $c and %a the same value type';
+
+=finish
+
+my $d = ValueMap.new(@initial);
+is $d.WHICH, %a.WHICH, 'are $d and %a the same value type';
+
+my $e = ValueMap.new(%a);
+is $e.WHICH, %a.WHICH, 'are $e and %a the same value type';
+
+my $f = ValueMap.new(%a);
+is $f.WHICH, %a.WHICH, 'are $f and %a the same value type';
+
+is $f.gist, '(0 1 2 3 4 5 6 7 8 9)', 'does .gist give the same as a List';
+is $f.Str, $f.raku,  'does .Str give the same as .raku';
+
+dies-ok { %a = 4,5,6 },  'can we not re-assign to a ValueMap';
+dies-ok { %a[0] = 42 },  'can we not assign to a ValueMap element';
+dies-ok { %a[0] := 42 }, 'can we not bind to a ValueMap element';
+
+for <
+  ASSIGN-POS BIND-POS push append pop shift unshift prepend
+> -> $method {
+    dies-ok { %a."$method"() }, "does calling .$method die";
+}
+
+my %s is Set = ValueMap.new(^2), ValueMap.new(^2);
+is %s.elems, 1, 'did we get 1 ValueMap with "is Set"';
+is set( ValueMap.new(^2), ValueMap.new(^2) ).elems, 1,
+  'did we get 1 ValueMap "set()"';
+
+dies-ok { $_ = 42 for %a },
+  'are iterated values also immutable';
+dies-ok { .value = 42 for %a.pairs },
+  'are iterated pairs also immutable';
+dies-ok { for %a.kv -> \k, \v { v = 42 } },
+  'are iterated kv also immutable';
+
+# vim: expandtab shiftwidth=4
