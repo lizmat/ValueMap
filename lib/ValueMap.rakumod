@@ -3,12 +3,22 @@ use nqp;
 
 my constant &new   = Map.^lookup('new');
 my constant &STORE = Map.^lookup('STORE');
+my constant &raku  = Map.^lookup('raku');
 
 my class ValueMap:ver<0.0.1>:auth<zef:lizmat> is Map {
     method new(|c) {
         my $valuemap = new(self, |c)  # need containerization for QuantHashes
     }
-    method STORE(|c) { STORE(self, |c, :DECONT) }
+    method STORE(+@values, :INITIALIZE($)!) {
+        STORE
+          self,
+          @values == 1
+            && nqp::iscont(my $first := @values.head)
+            && nqp::istype($first,ValueMap)
+            ?? nqp::decont($first).iterator
+            !! @values,
+          :INITIALIZE, :DECONT
+    }
 
     multi method WHICH(ValueMap:D:) {
         nqp::box_s(
@@ -49,6 +59,10 @@ my class ValueMap:ver<0.0.1>:auth<zef:lizmat> is Map {
           ValueObjAt
         )
     }
+
+    multi method raku(ValueMap:D:) { raku(self) }
+    multi method Str(ValueMap:D:)  { raku(self) }
+    multi method gist(ValueMap:D:) { raku(self) }
 }
 
 sub EXPORT() {

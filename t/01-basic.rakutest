@@ -1,7 +1,7 @@
 use Test;
 use ValueMap;
 
-plan 2;
+plan 23;
 
 my @initial = "a".."e" Z=> 1..5;
 
@@ -13,8 +13,6 @@ is %b.WHICH, %a.WHICH, 'are %b and %a the same value type';
 my $c = ValueMap.new(@initial);
 is $c.WHICH, %a.WHICH, 'are $c and %a the same value type';
 
-=finish
-
 my $d = ValueMap.new(@initial);
 is $d.WHICH, %a.WHICH, 'are $d and %a the same value type';
 
@@ -24,7 +22,8 @@ is $e.WHICH, %a.WHICH, 'are $e and %a the same value type';
 my $f = ValueMap.new(%a);
 is $f.WHICH, %a.WHICH, 'are $f and %a the same value type';
 
-is $f.gist, '(0 1 2 3 4 5 6 7 8 9)', 'does .gist give the same as a List';
+is $f.gist, 'ValueMap.new((:a(1),:b(2),:c(3),:d(4),:e(5)))',
+  'does .gist give the expected string';
 is $f.Str, $f.raku,  'does .Str give the same as .raku';
 
 dies-ok { %a = 4,5,6 },  'can we not re-assign to a ValueMap';
