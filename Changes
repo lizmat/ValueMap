@@ -2,5 +2,9 @@ Revision history for ValueMap
 
 {{$NEXT}}
 
+0.0.2  2022-01-09T19:41:46+01:00
+    - Make the .WHICH persistent to avoid possibly expensive recalculation
+    - Add some more documentation
+
 0.0.1  2022-01-09T18:04:48+01:00
     - Initial version

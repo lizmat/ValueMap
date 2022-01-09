@@ -5,10 +5,13 @@ my constant &new   = Map.^lookup('new');
 my constant &STORE = Map.^lookup('STORE');
 my constant &raku  = Map.^lookup('raku');
 
-my class ValueMap:ver<0.0.1>:auth<zef:lizmat> is Map {
+my class ValueMap:ver<0.0.2>:auth<zef:lizmat> is Map {
+    has ValueObjAt $!WHICH;
+
     method new(|c) {
         my $valuemap = new(self, |c)  # need containerization for QuantHashes
     }
+
     method STORE(+@values, :INITIALIZE($)!) {
         STORE
           self,
@@ -21,7 +24,9 @@ my class ValueMap:ver<0.0.1>:auth<zef:lizmat> is Map {
     }
 
     multi method WHICH(ValueMap:D:) {
-        nqp::box_s(
+        nqp::isconcrete($!WHICH)
+          ?? $!WHICH
+          !! ($!WHICH := nqp::box_s(
           nqp::concat(
             nqp::if(
               nqp::eqaddr(self.WHAT,ValueMap),
@@ -57,7 +62,7 @@ my class ValueMap:ver<0.0.1>:auth<zef:lizmat> is Map {
             )
           ),
           ValueObjAt
-        )
+        ))
     }
 
     multi method raku(ValueMap:D:) { raku(self) }
@@ -82,6 +87,13 @@ ValueMap - Provide an immutable Map value type
 =begin code :lang<raku>
 
 use ValueMap;
+
+my %vm is ValueMap = foo => 42, bar => 666, baz => 137;
+
+my $vm := ValueMap.new( (foo => 42, bar => 666, baz => 137) );
+
+my %s is Set = $vm, %vm;
+say %s.elems;  # 1
 
 =end code
 

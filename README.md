@@ -10,6 +10,13 @@ SYNOPSIS
 
 ```raku
 use ValueMap;
+
+my %vm is ValueMap = foo => 42, bar => 666, baz => 137;
+
+my $vm := ValueMap.new( (foo => 42, bar => 666, baz => 137) );
+
+my %s is Set = $vm, %vm;
+say %s.elems;  # 1
 ```
 
 DESCRIPTION
