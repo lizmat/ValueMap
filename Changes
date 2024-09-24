@@ -1,6 +1,8 @@
 Revision history for ValueMap
 
 {{$NEXT}}
+
+0.0.3  2024-09-24T17:27:06+02:00
     - Add sponsor button and link
     - Add seperate CI badges for each OS
     - Update copyright year
