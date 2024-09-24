@@ -1,6 +1,9 @@
 Revision history for ValueMap
 
 {{$NEXT}}
+    - Add sponsor button and link
+    - Add seperate CI badges for each OS
+    - Update copyright year
 
 0.0.2  2022-01-09T19:41:46+01:00
     - Make the .WHICH persistent to avoid possibly expensive recalculation

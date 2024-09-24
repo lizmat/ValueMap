@@ -5,7 +5,7 @@ my constant &new   = Map.^lookup('new');
 my constant &STORE = Map.^lookup('STORE');
 my constant &raku  = Map.^lookup('raku');
 
-my class ValueMap:ver<0.0.2>:auth<zef:lizmat> is Map {
+my class ValueMap is Map {
     has ValueObjAt $!WHICH;
 
     method new(|c) {
@@ -70,7 +70,7 @@ my class ValueMap:ver<0.0.2>:auth<zef:lizmat> is Map {
     multi method gist(ValueMap:D:) { raku(self) }
 }
 
-sub EXPORT() {
+my sub EXPORT() {
     CORE::.EXISTS-KEY('ValueMap')
       ?? Map.new
       !! Map.new( (ValueMap => ValueMap) )
@@ -99,10 +99,6 @@ say %s.elems;  # 1
 
 =head1 DESCRIPTION
 
-The functionality provided by this module, will be provided in language
-level 6.e and higher. If an implementation of ValueMap is already available,
-loading this module becomes a no-op.
-
 Raku provides a semi-immutable Associative datatype: Map. A Map can not have
 any elements added or removed from it.  However, since a Map can contain
 containers of which the value can be changed, it is B<not> a value type. So
@@ -121,7 +117,7 @@ deal to me!
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2022 Elizabeth Mattijsen
+Copyright 2022, 2024 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
