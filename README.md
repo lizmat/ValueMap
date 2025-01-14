@@ -22,7 +22,7 @@ say %s.elems;  # 1
 DESCRIPTION
 ===========
 
-Raku provides a semi-immutable Associative datatype: Map. A Map can not have any elements added or removed from it. However, since a Map can contain containers of which the value can be changed, it is **not** a value type. So you cannot use Maps in data structures such as Sets, because each Map is considered to be different from any other List, because they are not value types.
+Raku provides a semi-immutable `Associative` datatype: `Map`. A `Map` can not have any elements added or removed from it. However, since a `Map` **can** contain containers of which the value can be changed, it is **not** a value type. So you cannot use `Map`s in data structures such as `Set`s, because each `Map` is considered to be different from any other `Map`, because they are not value types.
 
 AUTHOR
 ======
@@ -36,7 +36,7 @@ If you like this module, or what I’m doing more generally, committing to a [sm
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2022, 2024 Elizabeth Mattijsen
+Copyright 2022, 2024, 2025 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
